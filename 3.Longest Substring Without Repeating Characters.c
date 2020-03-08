@@ -74,8 +74,8 @@ int lengthOfLongestSubstring(char * s)
 
 int main()
 {
-    int len = 5000000;
-    char str[len];
+    int len = 100000000;
+    char *str = malloc(sizeof(char) * len);
     for (int i = 0; i < len - 1; i++)
         str[i] = rand() % 26 + 97;
     str[len - 1] = '\0';

@@ -71,7 +71,7 @@ double findMedianSortedArrays(int* nums1, int nums1Size, int* nums2, int nums2Si
 
 double findMedianSortedArrays2(int* nums1, int nums1Size, int* nums2, int nums2Size){
     int tol = nums1Size + nums2Size;
-    double rec[tol];
+    double * rec = malloc(sizeof(double) * tol);
     int i = 0, j = 0, k = 0;
     
     while(i<nums1Size && j<nums2Size && k <= tol / 2){
@@ -107,7 +107,7 @@ int cmp(const void *a, const void *b)
 int main()
 {
     int *a, *b;
-    int len_a = 700000, len_b = 100000;
+    int len_a = 10000000, len_b = 7000000;
     a = malloc(sizeof(int) * len_a);
     b = malloc(sizeof(int) * len_b);
     srand(time(NULL));
