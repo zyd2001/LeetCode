@@ -1,3 +1,7 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
 int max(int a, int b)
 {
     if (a > b)
@@ -65,3 +69,64 @@ double findMedianSortedArrays(int* nums1, int nums1Size, int* nums2, int nums2Si
     return 0;
 }
 
+double findMedianSortedArrays2(int* nums1, int nums1Size, int* nums2, int nums2Size){
+    int tol = nums1Size + nums2Size;
+    double rec[tol];
+    int i = 0, j = 0, k = 0;
+    
+    while(i<nums1Size && j<nums2Size && k <= tol / 2){
+        if(nums1[i] < nums2[j]){
+            rec[k] = nums1[i];
+            i++;
+        }
+        else{
+            rec[k] = nums2[j];
+            j++;
+        }
+        k++;
+    }
+    while(i<nums1Size && k <= tol / 2){
+        rec[k] = nums1[i];
+        i++;
+        k++;
+    }
+    while(j<nums2Size && k <= tol / 2){
+        rec[k] = nums2[j];
+        j++;
+        k++;
+    }
+    k--;
+    return tol % 2 ? rec[k] : (rec[k] + rec[k-1]) / 2;
+}
+
+int cmp(const void *a, const void *b)
+{
+    return *((int*) a) - *((int*) b);
+}
+
+int main()
+{
+    int *a, *b;
+    int len_a = 700000, len_b = 100000;
+    a = malloc(sizeof(int) * len_a);
+    b = malloc(sizeof(int) * len_b);
+    srand(time(NULL));
+    for (int i = 0; i < len_a; i++)
+        a[i] = rand();
+    for (int i = 0; i < len_b; i++)
+        b[i] = rand();
+    qsort(a, len_a, sizeof(int), cmp);
+    qsort(b, len_b, sizeof(int), cmp);
+    clock_t t; 
+    t = clock(); 
+    double med = findMedianSortedArrays(a, len_a, b, len_b);
+    t = clock() - t; 
+    double time_taken = ((double)t)/CLOCKS_PER_SEC; // in seconds 
+    printf("1 took %f seconds to execute \n", time_taken); 
+    t = clock(); 
+    double med2 = findMedianSortedArrays2(a, len_a, b, len_b);
+    t = clock() - t; 
+    time_taken = ((double)t)/CLOCKS_PER_SEC; // in seconds 
+    printf("2 took %f seconds to execute \n", time_taken); 
+    printf("%f %f\n", med, med2);
+}
